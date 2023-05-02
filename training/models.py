@@ -3,21 +3,26 @@ import uuid
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
+
+def course_directory_path(instance, filename):
+    # путь, куда будет осуществлена загрузка MEDIA_ROOT/user_<id>/<filename>
+    return 'course_{0}/{1}'.format(instance.title, filename)
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
-    cud = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
+    title = models.CharField(max_length=100, verbose_name=_('Название'))
+    ctud = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, verbose_name=_("Название"))
     cud = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
-    description = models.TextField()
-
+    description = models.TextField(verbose_name=_('Описание'))
+    image = models.ImageField(upload_to=course_directory_path, verbose_name=_('Изображение'))
     class Meta:
-        verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name = _('Курс')
+        verbose_name_plural = _('Курсы')
         ordering = ['title']
 
     def get_absolute_url(self):
@@ -29,7 +34,7 @@ class Course(models.Model):
 
 class LessonText(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(verbose_name=_('Описание'))
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lesson_texts',
                                related_query_name='lesson_text')
 

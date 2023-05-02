@@ -1,0 +1,58 @@
+/* Стили для заголовка */
+h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+/* Стили для навигационного меню */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Стили для секции */
+section {
+  margin-bottom: 2rem;
+}
+
+/* Стили для списка лекций и заданий */
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Стили для футера */
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #888;
+}

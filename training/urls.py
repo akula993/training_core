@@ -1,5 +1,7 @@
 from django.urls import path
 
-urlpatterns = [
+from training.views import index
 
+urlpatterns = [
+path('', index,)
 ]

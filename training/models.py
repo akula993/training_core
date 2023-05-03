@@ -1,19 +1,41 @@
-import uuid
-
+import random
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
+from shortuuid.django_fields import ShortUUIDField
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager,
+                     self).get_queryset().filter(status='published')
 
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
-    cud = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
+    caid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="cat", alphabet='abcdefgh12345')
 
 
 class Course(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Черновик'),
+        ('published', 'Опубликован'),
+    )
     title = models.CharField(max_length=100)
-    cud = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
+    cid = ShortUUIDField(unique=True,
+                         length=7,
+                         max_length=30,
+                         prefix="cid",
+                         alphabet='1234567890cou')
     description = models.TextField()
+    publish = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    view = models.IntegerField(default=0)
+    objects = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         verbose_name = 'Курс'
@@ -21,10 +43,10 @@ class Course(models.Model):
         ordering = ['title']
 
     def get_absolute_url(self):
-        return reverse('course_detail', args=[str(self.cud)])
+        return reverse('course_detail', kwargs={'cid': str(self.cid)})
 
     def __str__(self):
-        return f"{self.title} ({self.cud})"
+        return f"{self.title} ({self.cid})"
 
 
 class LessonText(models.Model):

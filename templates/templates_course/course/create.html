@@ -1,0 +1,24 @@
+{% extends 'templates_course/base.html' %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {{ lesson_text_formset.management_form }}
+
+  {% for form in lesson_text_formset.forms %}
+  <div class="card mt-3">
+    <div class="card-body">
+      {{ form.as_p }}
+      {% if form.instance.pk %}
+      <input type="hidden" name="{{ form.prefix }}-DELETE" id="{{ form.prefix }}-DELETE">
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary mt-3">Create</button>
+</form>
+
+{% endblock %}

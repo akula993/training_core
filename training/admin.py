@@ -23,6 +23,12 @@ class LessonVideoInline(admin.TabularInline):
     verbose_name_plural = _("Видеоуроки")
 
 class CourseAdmin(admin.ModelAdmin):
+    list_display = ('title', 'cid', 'description', 'publish', 'status', 'view')
+    list_filter = ('status', 'publish')
+    search_fields = ('title', 'description')
+    date_hierarchy = 'publish'
+    ordering = ('status', 'publish')
+
     inlines = [LessonTextInline, LessonVideoInline]
 
 admin.site.register(Course, CourseAdmin)

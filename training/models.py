@@ -1,7 +1,9 @@
-import random
+import uuid
+
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 
@@ -13,7 +15,7 @@ class PublishedManager(models.Manager):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, verbose_name=_('Название'))
     caid = ShortUUIDField(unique=True, length=10, max_length=30, prefix="cat", alphabet='abcdefgh12345')
 
 
@@ -51,7 +53,7 @@ class Course(models.Model):
 
 class LessonText(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(verbose_name=_('Описание'))
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lesson_texts',
                                related_query_name='lesson_text')
 
